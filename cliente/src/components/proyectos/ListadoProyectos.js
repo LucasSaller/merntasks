@@ -15,6 +15,7 @@ const ListadoProyectos = () => {
       mostrarAlerta(mensaje.msg, mensaje.categoria);
     }
     obtenerProyectos();
+    //eslint-disable-next-line
   }, [mensaje]);
   if (proyectos.length === 0)
     return <p>No hay Proyectos, comienza creando uno!</p>;

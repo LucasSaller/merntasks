@@ -7,19 +7,16 @@ import {
   AGREGAR_TAREA,
   VALIDAR_TAREA,
   ELIMINAR_TAREA,
-  ESTADO_TAREA,
   TAREA_ACTUAL,
   ACTUALIZAR_TAREA,
   LIMPIAR_TAREA,
 } from "../../types";
-
+const initialState = {
+  tareasProyecto: [],
+  errorTarea: false,
+  tareaSeleccionada: null,
+};
 const TareaState = (props) => {
-  const initialState = {
-    tareasProyecto: [],
-    errorTarea: false,
-    tareaSeleccionada: null,
-  };
-
   // Crear dispatch y state
   const [state, dispatch] = useReducer(TareaReducer, initialState);
 
@@ -55,17 +52,32 @@ const TareaState = (props) => {
       type: VALIDAR_TAREA,
     });
   };
-  const eliminarTarea = (id) => {
-    dispatch({
-      type: ELIMINAR_TAREA,
-      payload: id,
-    });
+  const eliminarTarea = async (id, proyecto) => {
+    try {
+      await clienteAxios.delete(`/api/tareas/${id}`, {
+        params: { proyecto },
+      });
+      dispatch({
+        type: ELIMINAR_TAREA,
+        payload: id,
+      });
+    } catch (error) {}
   };
-  const cambiarEstadoTarea = (tarea) => {
-    dispatch({
-      type: ESTADO_TAREA,
-      payload: tarea,
-    });
+  const actualizarTarea = async (tarea) => {
+    console.log(tarea);
+    try {
+      const resultado = await clienteAxios.put(
+        `/api/tareas/${tarea._id}`,
+        tarea
+      );
+      console.log(resultado);
+      dispatch({
+        type: ACTUALIZAR_TAREA,
+        payload: resultado.data.tarea,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
   const guardarTareaActual = (tarea) => {
     dispatch({
@@ -73,12 +85,7 @@ const TareaState = (props) => {
       payload: tarea,
     });
   };
-  const actualizarTarea = (tarea) => {
-    dispatch({
-      type: ACTUALIZAR_TAREA,
-      payload: tarea,
-    });
-  };
+
   const limpiarTarea = () => {
     dispatch({
       type: LIMPIAR_TAREA,
@@ -94,7 +101,6 @@ const TareaState = (props) => {
         agregarTarea,
         validarTarea,
         eliminarTarea,
-        cambiarEstadoTarea,
         guardarTareaActual,
         actualizarTarea,
         limpiarTarea,

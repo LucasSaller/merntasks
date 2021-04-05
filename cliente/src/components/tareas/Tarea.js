@@ -5,14 +5,16 @@ import proyectoContext from "../../context/proyectos/proyectoContext";
 const Tarea = ({ tarea }) => {
   const proyectosContext = useContext(proyectoContext);
   const { proyecto } = proyectosContext;
+
   const context = useContext(tareaContext);
-  const [proyectoActual] = proyecto;
   const {
     eliminarTarea,
     obtenerTareas,
     cambiarEstadoTarea,
     guardarTareaActual,
   } = context;
+
+  const [proyectoActual] = proyecto;
 
   const tareaAEliminar = (id) => {
     eliminarTarea(id);
@@ -57,7 +59,7 @@ const Tarea = ({ tarea }) => {
         <button
           type="button"
           className="btn btn-primario"
-          onClick= { () => seleccionarTarea(tarea)}
+          onClick={() => seleccionarTarea(tarea)}
         >
           Editar
         </button>

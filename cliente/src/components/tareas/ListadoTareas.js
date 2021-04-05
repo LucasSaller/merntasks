@@ -17,7 +17,9 @@ const ListadoTareas = () => {
 
   // Array destructuring para extraer el proyecto actual
   const [proyectoActual] = proyecto;
-
+  const onClickEliminar = () => {
+    eliminarProyecto(proyectoActual._id);
+  };
   return (
     <>
       <h2>Proyecto: {proyectoActual.nombre}</h2>
@@ -39,7 +41,7 @@ const ListadoTareas = () => {
       <button
         type="button"
         className="btn btn-eliminar"
-        onClick={() => eliminarProyecto(proyectoActual.id)}
+        onClick={onClickEliminar}
       >
         Eliminar Proyecto &times;
       </button>
